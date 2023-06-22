@@ -63,7 +63,11 @@ class ListenerNode(Node):
         self.declare_parameter("serial_port", "", serial_port_descriptor)
 
     def timer_callback(self):
-        tag_id, tag_position = self.dwm_handle.wait_for_position_report()
+        try:
+            tag_id, tag_position = self.dwm_handle.wait_for_position_report()
+        except dwm1001.ParsingError as error:
+            self.get_logger().warn("Could not parse position report. Skipping it.")
+            return
 
         msg = TagPosition()
         msg.tag_id = tag_id
