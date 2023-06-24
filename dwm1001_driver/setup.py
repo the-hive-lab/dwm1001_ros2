@@ -17,5 +17,10 @@ setup(
     description="ROS 2 driver package for Qorvo (previously Decawave) DWM1001",
     license="Apache License 2.0",
     tests_require=["pytest"],
-    entry_points={"console_scripts": ["listener = dwm1001_driver.listener_node:main"]},
+    entry_points={
+        "console_scripts": [
+            "listener = dwm1001_driver.listener_node:main",
+            "dummy_listener = dwm1001_dummy_driver.dummy_listener_node:main",
+        ]
+    },
 )
