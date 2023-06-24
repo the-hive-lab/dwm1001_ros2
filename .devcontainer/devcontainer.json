@@ -1,0 +1,19 @@
+{
+    "name": "ROS 2 Humble",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools-extension-pack",
+                "ms-vscode.cmake-tools",
+                "streetsidesoftware.code-spell-checker",
+                "ms-python.python"
+            ]
+        }
+    },
+    "remoteUser": "vscode",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/src,type=bind",
+    "workspaceFolder": "/workspace/src"
+}
