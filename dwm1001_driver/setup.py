@@ -20,7 +20,7 @@ setup(
     entry_points={
         "console_scripts": [
             "listener = dwm1001_driver.listener_node:main",
-            "dummy_listener = dwm1001_dummy_driver.dummy_listener_node:main",
+            "dummy_listener = dwm1001_driver.dummy_listener_node:main",
         ]
     },
 )

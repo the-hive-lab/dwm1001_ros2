@@ -16,7 +16,7 @@ import rclpy
 from rclpy.node import Node
 
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
-from dwm1001_interfaces.msg import TagPosition
+from geometry_msgs.msg import PointStamped
 
 
 class DummyListenerNode(Node):
@@ -31,7 +31,7 @@ class DummyListenerNode(Node):
 
         self.get_logger().info("Started position reporting.")
 
-        self.publisher = self.create_publisher(TagPosition, "tag_position", 1)
+        self.publisher = self.create_publisher(PointStamped, "tag_position", 1)
         self.timer = self.create_timer(1 / 10, self.timer_callback)
 
     def _shutdown_fatal(self, message: str) -> None:
@@ -48,12 +48,14 @@ class DummyListenerNode(Node):
         self.declare_parameter("tag_id", "", tag_id)
 
     def timer_callback(self):
-        msg = TagPosition()
-        msg.tag_id = self.tag_id
-        msg.position.x = 1.2
-        msg.position.y = 2.3
-        msg.position.z = 3.4
-        msg.quality = 42
+        msg = PointStamped()
+
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = self.tag_id
+
+        msg.point.x = 1.2
+        msg.point.y = 2.3
+        msg.point.z = 3.4
 
         self.publisher.publish(msg)
 
