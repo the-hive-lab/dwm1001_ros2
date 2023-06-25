@@ -33,7 +33,7 @@ class DummyListenerNode(Node):
 
         self.get_logger().info("Started position reporting.")
 
-        self.publisher = self.create_publisher(PointStamped, "tag_position", 1)
+        self.publisher = self.create_publisher(PointStamped, self.tag_id, 1)
         self.tf_broadcaster = TransformBroadcaster(self)
         self.timer = self.create_timer(1 / 10, self.timer_callback)
 
