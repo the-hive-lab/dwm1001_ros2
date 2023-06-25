@@ -34,7 +34,7 @@ class ListenerNode(Node):
         self.dwm_handle.start_position_reporting()
         self.get_logger().info("Started position reporting.")
 
-        self.publisher = self.create_publisher(PointStamped, "tag_position", 1)
+        self.publishers_dict = dict()
         self.timer = self.create_timer(1 / 10, self.timer_callback)
 
     def _open_serial_port(self, serial_port: str) -> serial.Serial:
@@ -65,7 +65,7 @@ class ListenerNode(Node):
     def timer_callback(self):
         try:
             tag_id, tag_position = self.dwm_handle.wait_for_position_report()
-        except dwm1001.ParsingError as error:
+        except dwm1001.ParsingError:
             self.get_logger().warn("Could not parse position report. Skipping it.")
             return
 
@@ -78,7 +78,16 @@ class ListenerNode(Node):
         msg.point.y = tag_position.y_m
         msg.point.z = tag_position.z_m
 
-        self.publisher.publish(msg)
+        if tag_id not in self.publishers_dict:
+            self.get_logger().info(
+                f"Discovered new tag 'DW{tag_id}'. Creating publisher."
+            )
+
+            self.publishers_dict[tag_id] = self.create_publisher(
+                PointStamped, "dw" + tag_id, 1
+            )
+
+        self.publishers_dict[tag_id].publish(msg)
 
 
 def main(args=None):
