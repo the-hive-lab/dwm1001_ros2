@@ -16,7 +16,7 @@ import rclpy
 from rclpy.node import Node
 
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
-from dwm1001_interfaces.msg import TagPosition
+from geometry_msgs.msg import PointStamped
 
 import dwm1001
 import serial
@@ -34,7 +34,7 @@ class ListenerNode(Node):
         self.dwm_handle.start_position_reporting()
         self.get_logger().info("Started position reporting.")
 
-        self.publisher = self.create_publisher(TagPosition, "tag_position", 1)
+        self.publisher = self.create_publisher(PointStamped, "tag_position", 1)
         self.timer = self.create_timer(1 / 10, self.timer_callback)
 
     def _open_serial_port(self, serial_port: str) -> serial.Serial:
@@ -69,12 +69,14 @@ class ListenerNode(Node):
             self.get_logger().warn("Could not parse position report. Skipping it.")
             return
 
-        msg = TagPosition()
-        msg.tag_id = tag_id
-        msg.position.x = tag_position.x_m
-        msg.position.y = tag_position.y_m
-        msg.position.z = tag_position.z_m
-        msg.quality = tag_position.quality
+        msg = PointStamped()
+
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = tag_id
+
+        msg.point.x = tag_position.x_m
+        msg.point.y = tag_position.y_m
+        msg.point.z = tag_position.z_m
 
         self.publisher.publish(msg)
 
