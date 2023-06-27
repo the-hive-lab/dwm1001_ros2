@@ -21,6 +21,8 @@ setup(
         "console_scripts": [
             "listener = dwm1001_driver.listener_node:main",
             "dummy_listener = dwm1001_driver.dummy_listener_node:main",
+            "tag = dwm1001_driver.tag_node:main",
+            "dummy_tag = dwm1001_driver.dummy_tag_node:main",
         ]
     },
 )
