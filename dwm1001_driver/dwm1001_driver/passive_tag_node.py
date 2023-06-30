@@ -34,6 +34,17 @@ class PassiveTagNode(Node):
         self.dwm_handle.start_position_reporting()
         self.get_logger().info("Started position reporting.")
 
+        if self.get_parameter("ignore_tags").value:
+            self.tags_to_ignore = self.get_parameter("ignore_tags").value.split(",")
+        else:
+            self.tags_to_ignore = []
+
+        if self.tags_to_ignore:
+            self.get_logger().info(
+                f"Ignoring tags: "
+                + ", ".join(f"'{tag}'" for tag in self.tags_to_ignore)
+            )
+
         self.publishers_dict = dict()
         self.timer = self.create_timer(1 / 10, self.timer_callback)
 
@@ -62,11 +73,23 @@ class PassiveTagNode(Node):
         )
         self.declare_parameter("serial_port", "", serial_port_descriptor)
 
+        ignore_tags_descriptor = ParameterDescriptor(
+            description="DWM1001 tags to ignore. This node will not publish "
+            + "position reports coming from these tags. Expected format is "
+            + " comma-separated values. Example: 'DW1234,DW1235,DW1236'.",
+            type=ParameterType.PARAMETER_STRING,
+            read_only=True,
+        )
+        self.declare_parameter("ignore_tags", "", ignore_tags_descriptor)
+
     def timer_callback(self):
         try:
             tag_id, tag_position = self.dwm_handle.wait_for_position_report()
         except dwm1001.ParsingError:
             self.get_logger().warn("Could not parse position report. Skipping it.")
+            return
+
+        if "DW" + tag_id in self.tags_to_ignore:
             return
 
         time_stamp = self.get_clock().now().to_msg()
