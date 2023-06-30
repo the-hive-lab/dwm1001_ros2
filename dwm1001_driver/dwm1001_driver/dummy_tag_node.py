@@ -15,8 +15,6 @@
 import rclpy
 from rclpy.node import Node
 
-from tf2_ros import TransformBroadcaster
-
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from geometry_msgs.msg import PointStamped, TransformStamped
 
@@ -34,7 +32,6 @@ class DummyTagNode(Node):
         self.get_logger().info("Started position reporting.")
 
         self.publisher = self.create_publisher(PointStamped, self.tag_id, 1)
-        self.tf_broadcaster = TransformBroadcaster(self)
         self.timer = self.create_timer(1 / 10, self.timer_callback)
 
     def _shutdown_fatal(self, message: str) -> None:
@@ -62,18 +59,7 @@ class DummyTagNode(Node):
         msg.point.y = 2.3
         msg.point.z = 3.4
 
-        tf_msg = TransformStamped()
-
-        tf_msg.header.stamp = time_stamp
-        tf_msg.header.frame_id = "dwm1001"
-
-        tf_msg.child_frame_id = self.tag_id
-        tf_msg.transform.translation.x = 1.2
-        tf_msg.transform.translation.y = 2.3
-        tf_msg.transform.translation.z = 3.4
-
         self.publisher.publish(msg)
-        self.tf_broadcaster.sendTransform(tf_msg)
 
 
 def main(args=None):

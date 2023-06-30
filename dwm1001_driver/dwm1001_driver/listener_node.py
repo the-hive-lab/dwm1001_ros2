@@ -15,8 +15,6 @@
 import rclpy
 from rclpy.node import Node
 
-from tf2_ros import TransformBroadcaster
-
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from geometry_msgs.msg import PointStamped, TransformStamped
 
@@ -37,7 +35,6 @@ class ListenerNode(Node):
         self.get_logger().info("Started position reporting.")
 
         self.publishers_dict = dict()
-        self.tf_broadcaster = TransformBroadcaster(self)
         self.timer = self.create_timer(1 / 10, self.timer_callback)
 
     def _open_serial_port(self, serial_port: str) -> serial.Serial:
@@ -92,18 +89,7 @@ class ListenerNode(Node):
                 PointStamped, "dw" + tag_id, 1
             )
 
-        tf_msg = TransformStamped()
-
-        tf_msg.header.stamp = time_stamp
-        tf_msg.header.frame_id = "dwm1001"
-
-        tf_msg.child_frame_id = tag_id
-        tf_msg.transform.translation.x = tag_position.x_m
-        tf_msg.transform.translation.y = tag_position.y_m
-        tf_msg.transform.translation.z = tag_position.z_m
-
         self.publishers_dict[tag_id].publish(msg)
-        self.tf_broadcaster.sendTransform(tf_msg)
 
 
 def main(args=None):
