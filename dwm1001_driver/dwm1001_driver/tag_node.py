@@ -30,12 +30,10 @@ class TagNode(Node):
 
         self._declare_parameters()
 
-        self.tag_id = self.get_parameter("tag_id").value
-        if not self.tag_id:
-            self._shutdown_fatal("No DWM1001 tag identifier specified.")
-
         serial_handle = self._open_serial_port(self.get_parameter("serial_port").value)
         self.dwm_handle = dwm1001.Tag(serial_handle)
+
+        self.tag_id = "dw" + self.dwm_handle.tag_id
 
         self.dwm_handle.start_position_reporting()
         self.get_logger().info("Started position reporting.")
@@ -68,13 +66,6 @@ class TagNode(Node):
             read_only=True,
         )
         self.declare_parameter("serial_port", "", serial_port_descriptor)
-
-        tag_id_descriptor = ParameterDescriptor(
-            description="DWM1001 device identifier",
-            type=ParameterType.PARAMETER_STRING,
-            read_only=True,
-        )
-        self.declare_parameter("tag_id", "", tag_id_descriptor)
 
     def timer_callback(self):
         try:
