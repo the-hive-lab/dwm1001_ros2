@@ -19,9 +19,9 @@ from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from geometry_msgs.msg import PointStamped, TransformStamped
 
 
-class DummyTagNode(Node):
+class DummyPassiveTagNode(Node):
     def __init__(self) -> None:
-        super().__init__("dummy_tag")
+        super().__init__("dummy_passive_tag")
 
         self._declare_parameters()
 
@@ -65,10 +65,10 @@ class DummyTagNode(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    dummy_listener = DummyTagNode()
-    rclpy.spin(dummy_listener)
+    dummy_passive_tag = DummyPassiveTagNode()
+    rclpy.spin(dummy_passive_tag)
 
-    dummy_listener.destroy_node()
+    dummy_passive_tag.destroy_node()
     rclpy.shutdown()
 
 

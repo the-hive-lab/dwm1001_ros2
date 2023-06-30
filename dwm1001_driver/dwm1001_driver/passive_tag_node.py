@@ -22,14 +22,14 @@ import dwm1001
 import serial
 
 
-class ListenerNode(Node):
+class PassiveTagNode(Node):
     def __init__(self) -> None:
-        super().__init__("listener")
+        super().__init__("passive_tag")
 
         self._declare_parameters()
 
         serial_handle = self._open_serial_port(self.get_parameter("serial_port").value)
-        self.dwm_handle = dwm1001.Listener(serial_handle)
+        self.dwm_handle = dwm1001.PassiveTag(serial_handle)
 
         self.dwm_handle.start_position_reporting()
         self.get_logger().info("Started position reporting.")
@@ -82,7 +82,7 @@ class ListenerNode(Node):
 
         if tag_id not in self.publishers_dict:
             self.get_logger().info(
-                f"Discovered new tag 'DW{tag_id}'. Creating publisher."
+                f"Discovered new active tag 'DW{tag_id}'. Creating publisher."
             )
 
             self.publishers_dict[tag_id] = self.create_publisher(
@@ -95,10 +95,10 @@ class ListenerNode(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    listener = ListenerNode()
-    rclpy.spin(listener)
+    passive_tag = PassiveTagNode()
+    rclpy.spin(passive_tag)
 
-    listener.destroy_node()
+    passive_tag.destroy_node()
     rclpy.shutdown()
 
 

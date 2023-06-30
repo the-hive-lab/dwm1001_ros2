@@ -22,14 +22,14 @@ import dwm1001
 import serial
 
 
-class TagNode(Node):
+class ActiveTagNode(Node):
     def __init__(self) -> None:
-        super().__init__("tag")
+        super().__init__("active_tag")
 
         self._declare_parameters()
 
         serial_handle = self._open_serial_port(self.get_parameter("serial_port").value)
-        self.dwm_handle = dwm1001.Tag(serial_handle)
+        self.dwm_handle = dwm1001.ActiveTag(serial_handle)
 
         self.tag_id = "dw" + self.dwm_handle.tag_id
 
@@ -88,10 +88,10 @@ class TagNode(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    tag = TagNode()
-    rclpy.spin(tag)
+    active_tag = ActiveTagNode()
+    rclpy.spin(active_tag)
 
-    tag.destroy_node()
+    active_tag.destroy_node()
     rclpy.shutdown()
 
 
