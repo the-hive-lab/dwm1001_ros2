@@ -53,7 +53,7 @@ class DummyTagNode(Node):
         msg = PointStamped()
 
         msg.header.stamp = time_stamp
-        msg.header.frame_id = self.tag_id
+        msg.header.frame_id = "dwm1001"
 
         msg.point.x = 1.2
         msg.point.y = 2.3
