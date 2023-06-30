@@ -114,6 +114,10 @@ class PassiveTagNode(Node):
 
         self.publishers_dict[tag_id].publish(msg)
 
+        # DWM1001 tags publish at 10 Hz, so we want 2 times that
+        # (Nyquist theorem) per known tag.
+        self.timer.timer_period_ns = 1 / (20 * len(self.publishers_dict)) * 1e9
+
 
 def main(args=None):
     rclpy.init(args=args)
