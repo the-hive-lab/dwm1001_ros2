@@ -14,6 +14,11 @@
 
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import (
+    QoSProfile,
+    QoSHistoryPolicy,
+    QoSDurabilityPolicy,
+)
 
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from visualization_msgs.msg import Marker, MarkerArray
@@ -25,7 +30,13 @@ class AnchorVisualizerNode(Node):
 
         self._declare_parameters()
 
-        self.marker_publisher = self.create_publisher(MarkerArray, "anchor_markers", 1)
+        qos_profile = QoSProfile(
+            history=QoSHistoryPolicy.KEEP_ALL,
+            durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
+        )
+        self.marker_publisher = self.create_publisher(
+            MarkerArray, "anchor_markers", qos_profile
+        )
         self.publisher_timer = self.create_timer(1, self._publish_markers)
 
     def _declare_parameters(self) -> None:
