@@ -74,7 +74,7 @@ class ListenerNode(Node):
         msg = PointStamped()
 
         msg.header.stamp = time_stamp
-        msg.header.frame_id = tag_id
+        msg.header.frame_id = "dwm1001"
 
         msg.point.x = tag_position.x_m
         msg.point.y = tag_position.y_m
