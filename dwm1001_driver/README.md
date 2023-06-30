@@ -82,6 +82,7 @@ This node does not provide subscribers.
 | Topic | Data Type | Default Value | Required | Read Only | Description |
 |-------|-----------|---------------|----------|-----------|-------------|
 | `~/serial_port` | `string` | `''` | Yes | Yes | Serial port for interfacing with the DWM1001 device. |
+| `~/ignore_tags` | `string` | `''` | No | Yes | Comma-separated list of DWM1001 tags to ignore. This node will not publish reports from tags on this list. Example: `DW1234,DW1235,DW1236`. |
 
 ### Services
 
