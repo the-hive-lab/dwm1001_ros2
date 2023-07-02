@@ -25,13 +25,13 @@ class DummyPassiveTagNode(Node):
 
         self._declare_parameters()
 
-        self.tag_id = self.get_parameter("tag_id").value
-        if not self.tag_id:
-            self._shutdown_fatal("No DWM1001 tag identifier specified.")
+        self.tag_label = self.get_parameter("tag_label").value
+        if not self.tag_label:
+            self._shutdown_fatal("No DWM1001 tag label specified.")
 
         self.get_logger().info("Started position reporting.")
 
-        self.publisher = self.create_publisher(PointStamped, self.tag_id, 1)
+        self.publisher = self.create_publisher(PointStamped, self.tag_label, 1)
         self.timer = self.create_timer(1 / 10, self.timer_callback)
 
     def _shutdown_fatal(self, message: str) -> None:
@@ -39,13 +39,13 @@ class DummyPassiveTagNode(Node):
         exit()
 
     def _declare_parameters(self):
-        tag_id = ParameterDescriptor(
-            description="DWM1001 tag identifier",
+        tag_label = ParameterDescriptor(
+            description="DWM1001 tag label",
             type=ParameterType.PARAMETER_STRING,
             read_only=True,
         )
 
-        self.declare_parameter("tag_id", "", tag_id)
+        self.declare_parameter("tag_label", "", tag_label)
 
     def timer_callback(self):
         time_stamp = self.get_clock().now().to_msg()

@@ -31,12 +31,12 @@ class ActiveTagNode(Node):
         serial_handle = self._open_serial_port(self.get_parameter("serial_port").value)
         self.dwm_handle = dwm1001.ActiveTag(serial_handle)
 
-        self.tag_id = "dw" + self.dwm_handle.tag_id
+        self.tag_label = self.dwm_handle.system_info.label
 
         self.dwm_handle.start_position_reporting()
         self.get_logger().info("Started position reporting.")
 
-        self.point_publisher = self.create_publisher(PointStamped, self.tag_id, 1)
+        self.point_publisher = self.create_publisher(PointStamped, self.tag_label, 1)
         self.timer = self.create_timer(1 / 25, self.timer_callback)
 
     def _open_serial_port(self, serial_port: str) -> serial.Serial:

@@ -17,7 +17,7 @@ This node does not provide subscribers.
 
 | Topic | Message Type | Frequency | Description |
 |-------|--------------|-----------|-------------|
-| `~/<discovered_tag_id>` | `geometry_msgs/PointStamped` | 10 Hz | Discovered active tag position. This node creates a publisher for each discovered DWM1001 active tag, and the topic name is the tag's identifier. |
+| `~/<discovered_tag_label>` | `geometry_msgs/PointStamped` | 10 Hz | Discovered active tag position. This node creates a publisher for each discovered DWM1001 active tag, and the topic name is the tag's label. |
 
 ### Parameters
 
@@ -46,13 +46,13 @@ This node does not provide subscribers.
 
 | Topic | Message Type | Frequency | Description |
 |-------|--------------|-----------|-------------|
-| `~/<tag_id>` | `geometry_msgs/PointStamped` | 10 Hz | "Discoverd" active tag's current position in the common DWM1001 coordinate frame. |
+| `~/<tag_label>` | `geometry_msgs/PointStamped` | 10 Hz | "Discoverd" active tag's current position in the common DWM1001 coordinate frame. |
 
 ### Parameters
 
 | Topic | Data Type | Default Value | Required | Read Only | Description |
 |-------|-----------|---------------|----------|-----------|-------------|
-| `~/tag_id` | `string` | `''` | Yes | Yes | Identifier for the imitated DWM1001 tag. |
+| `~/tag_label` | `string` | `''` | Yes | Yes | Label for the imitated DWM1001 tag. |
 
 ### Services
 
@@ -75,7 +75,7 @@ This node does not provide subscribers.
 
 | Topic | Message Type | Frequency | Description |
 |-------|--------------|-----------|-------------|
-| `~/<tag_id>` | `geometry_msgs/PointStamped` | 10 Hz | Tag's current position in the common DWM1001 coordinate frame. |
+| `~/<tag_label>` | `geometry_msgs/PointStamped` | 10 Hz | Tag's current position in the common DWM1001 coordinate frame. |
 
 ### Parameters
 
@@ -105,13 +105,13 @@ This node does not provide subscribers.
 
 | Topic | Message Type | Frequency | Description |
 |-------|--------------|-----------|-------------|
-| `~/<tag_id>` | `geometry_msgs/PointStamped` | 10 Hz | Tag's current position in the common DWM1001 coordinate frame. |
+| `~/<tag_label>` | `geometry_msgs/PointStamped` | 10 Hz | Tag's current position in the common DWM1001 coordinate frame. |
 
 ### Parameters
 
 | Topic | Data Type | Default Value | Required | Read Only | Description |
 |-------|-----------|---------------|----------|-----------|-------------|
-| `~/tag_id` | `string` | `''` | Yes | Yes | Identifier for the imitated DWM1001 tag. |
+| `~/tag_label` | `string` | `''` | Yes | Yes | Label for the imitated DWM1001 tag. |
 
 ### Services
 

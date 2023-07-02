@@ -76,7 +76,7 @@ class PassiveTagNode(Node):
         ignore_tags_descriptor = ParameterDescriptor(
             description="DWM1001 tags to ignore. This node will not publish "
             + "position reports coming from these tags. Expected format is "
-            + " comma-separated values. Example: 'DW1234,DW1235,DW1236'.",
+            + "comma-separated values. Example: 'DW1234,DW1235,DW1236'.",
             type=ParameterType.PARAMETER_STRING,
             read_only=True,
         )
@@ -84,12 +84,12 @@ class PassiveTagNode(Node):
 
     def timer_callback(self):
         try:
-            tag_id, tag_position = self.dwm_handle.wait_for_position_report()
+            tag_label, tag_position = self.dwm_handle.wait_for_position_report()
         except dwm1001.ParsingError:
             self.get_logger().warn("Could not parse position report. Skipping it.")
             return
 
-        if "DW" + tag_id in self.tags_to_ignore:
+        if tag_label in self.tags_to_ignore:
             return
 
         time_stamp = self.get_clock().now().to_msg()
@@ -103,16 +103,16 @@ class PassiveTagNode(Node):
         msg.point.y = tag_position.y_m
         msg.point.z = tag_position.z_m
 
-        if tag_id not in self.publishers_dict:
+        if tag_label not in self.publishers_dict:
             self.get_logger().info(
-                f"Discovered new active tag 'DW{tag_id}'. Creating publisher."
+                f"Discovered new active tag '{tag_label}'. Creating publisher."
             )
 
-            self.publishers_dict[tag_id] = self.create_publisher(
-                PointStamped, "dw" + tag_id, 1
+            self.publishers_dict[tag_label] = self.create_publisher(
+                PointStamped, tag_label, 1
             )
 
-        self.publishers_dict[tag_id].publish(msg)
+        self.publishers_dict[tag_label].publish(msg)
 
         # DWM1001 tags publish at 10 Hz, so we want 2 times that
         # (Nyquist theorem) per known tag.
