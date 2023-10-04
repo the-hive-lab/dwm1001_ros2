@@ -28,14 +28,30 @@
 
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration, TextSubstitution, PathJoinSubstitution
+from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description() -> LaunchDescription:
+
+    config_file_val = LaunchConfiguration('config_file')
+    # TODO: figure out the defaults here - why does it require config_file? This default should work.
+    default_config_file_path = PathJoinSubstitution([FindPackageShare('dwm1001_launch'),
+                                                     'config',
+                                                     'default_active.yaml'])
+    config_file_launch_arg = DeclareLaunchArgument(
+        'config_file',
+        default_value=default_config_file_path,
+        description='Configuration file for the active node'
+    )
+
     dwm1001_driver = Node(
         package="dwm1001_driver",
         executable="active_tag",
-        name="dw5188_tag",
-        parameters=[{"serial_port": "/dev/ttyACM0"}],
+        # name="dw5188_tag",
+        parameters=[PathJoinSubstitution([FindPackageShare('dwm1001_launch'), 'config', config_file_val])]
     )
 
     # map_to_dwm1001_transform = Node(
@@ -69,5 +85,5 @@ def generate_launch_description() -> LaunchDescription:
     # )
 
     return LaunchDescription(
-        [dwm1001_driver] #map_to_dwm1001_transform, anchor_visualizer, dwm_transform]
+        [dwm1001_driver, config_file_launch_arg] #map_to_dwm1001_transform, anchor_visualizer, dwm_transform]
     )
