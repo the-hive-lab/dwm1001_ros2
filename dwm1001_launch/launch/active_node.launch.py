@@ -36,6 +36,13 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description() -> LaunchDescription:
 
+    tag_namespace_val = LaunchConfiguration('tag_namespace')
+    tag_namespace_arg = DeclareLaunchArgument(
+            'tag_namespace',
+            default_value=TextSubstitution(text='active'),
+            description='Name of the tag namespace'
+        )
+
     config_file_val = LaunchConfiguration('config_file')
     # TODO: figure out the defaults here - why does it require config_file? This default should work.
     default_config_file_path = PathJoinSubstitution([FindPackageShare('dwm1001_launch'),
@@ -50,7 +57,7 @@ def generate_launch_description() -> LaunchDescription:
     dwm1001_driver = Node(
         package="dwm1001_driver",
         executable="active_tag",
-        # name="dw5188_tag",
+        namespace=tag_namespace_val,
         parameters=[PathJoinSubstitution([FindPackageShare('dwm1001_launch'), 'config', config_file_val])]
     )
 
@@ -85,5 +92,5 @@ def generate_launch_description() -> LaunchDescription:
     # )
 
     return LaunchDescription(
-        [dwm1001_driver, config_file_launch_arg] #map_to_dwm1001_transform, anchor_visualizer, dwm_transform]
+        [tag_namespace_arg, config_file_launch_arg, dwm1001_driver] #map_to_dwm1001_transform, anchor_visualizer, dwm_transform]
     )
