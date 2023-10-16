@@ -37,7 +37,7 @@ class ActiveTagNode(Node):
         self.dwm_handle.start_position_reporting()
         self.get_logger().info("Started position reporting.")
 
-        tag_topic = 'output/' + self.get_parameter('tag_id').value
+        tag_topic = f"output/{self.get_parameter('tag_id').value}"
         self.point_publisher = self.create_publisher(PointStamped, tag_topic, 1)
         self.timer = self.create_timer(1 / 25, self.timer_callback)
 
