@@ -47,5 +47,5 @@ def generate_launch_description() -> LaunchDescription:
     )
 
     return LaunchDescription(
-        [tag_namespace_arg, dwm1001_driver]
+        [tag_namespace_arg, config_file_launch_arg, dwm1001_driver]
     )
