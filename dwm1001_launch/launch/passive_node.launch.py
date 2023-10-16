@@ -30,7 +30,6 @@ def generate_launch_description() -> LaunchDescription:
         )
     
     config_file_val = LaunchConfiguration('config_file')
-    # TODO: figure out the defaults here - why does it require config_file? This default should work.
     default_config_file_path = PathJoinSubstitution([FindPackageShare('dwm1001_launch'),
                                                      'config',
                                                      'default_passive.yaml'])
