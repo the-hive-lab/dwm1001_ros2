@@ -2,3 +2,4 @@ active:
   active_tag:
     ros__parameters:
       serial_port: "/dev/ttyACM0"
+      tag_id: "DW5188"

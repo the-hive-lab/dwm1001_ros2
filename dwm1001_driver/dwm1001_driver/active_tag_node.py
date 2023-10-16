@@ -34,12 +34,11 @@ class ActiveTagNode(Node):
         serial_handle = self._open_serial_port(serial_port_param)
         self.dwm_handle = dwm1001.ActiveTag(serial_handle)
 
-        self.tag_label = self.dwm_handle.system_info.label
-
         self.dwm_handle.start_position_reporting()
         self.get_logger().info("Started position reporting.")
 
-        self.point_publisher = self.create_publisher(PointStamped, self.tag_label, 1)
+        tag_topic = 'output/' + self.get_parameter('tag_id').value
+        self.point_publisher = self.create_publisher(PointStamped, tag_topic, 1)
         self.timer = self.create_timer(1 / 25, self.timer_callback)
 
     def _open_serial_port(self, serial_port: str) -> serial.Serial:
@@ -65,7 +64,13 @@ class ActiveTagNode(Node):
             type=ParameterType.PARAMETER_STRING,
             read_only=True,
         )
+        tag_id_descriptor = ParameterDescriptor(
+            description="The ID for the particular DWM1001 device.",
+            type=ParameterType.PARAMETER_STRING,
+            read_only=True,
+        )
         self.declare_parameter("serial_port", "", serial_port_descriptor)
+        self.declare_parameter("tag_id", "", tag_id_descriptor)
 
     def timer_callback(self):
         try:
