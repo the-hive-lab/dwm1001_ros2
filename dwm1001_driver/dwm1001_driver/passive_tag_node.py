@@ -108,8 +108,9 @@ class PassiveTagNode(Node):
                 f"Discovered new active tag '{tag_label}'. Creating publisher."
             )
 
+            tag_topic = f'output/{tag_label}'
             self.publishers_dict[tag_label] = self.create_publisher(
-                PointStamped, tag_label, 1
+                PointStamped, tag_topic, 1
             )
 
         self.publishers_dict[tag_label].publish(msg)
