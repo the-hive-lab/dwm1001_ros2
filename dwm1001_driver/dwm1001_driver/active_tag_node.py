@@ -28,7 +28,10 @@ class ActiveTagNode(Node):
 
         self._declare_parameters()
 
-        serial_handle = self._open_serial_port(self.get_parameter("serial_port").value)
+        serial_port_param = self.get_parameter("serial_port").value
+        self.get_logger().info(f"Provided serial port: '{serial_port_param}'")
+
+        serial_handle = self._open_serial_port(serial_port_param)
         self.dwm_handle = dwm1001.ActiveTag(serial_handle)
 
         self.tag_label = self.dwm_handle.system_info.label

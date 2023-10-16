@@ -10,4 +10,9 @@ Currently, we have two lauch files:
 
 ## Parameter Files
 
-TBD
+All parameter files should be contained in the `config` directory.
+At this time, if you want to make a custom deployment, you need to create a new `yaml` file that has your desired namespace instead of `default`.
+Then, you invoke your launch file with
+```
+ros2 launch active_node.launch.py tag_namespace:=<custom name> config_file:=<custom config yaml>
+```

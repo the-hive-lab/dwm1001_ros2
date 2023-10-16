@@ -1,0 +1,5 @@
+passive:
+  passive_tag:
+    ros__parameters:
+      serial_port: "/dev/ttyACM1"
+      ignore_tags: ""
