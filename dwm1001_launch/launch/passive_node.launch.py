@@ -14,16 +14,38 @@
 
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration, TextSubstitution, PathJoinSubstitution, EnvironmentVariable
+from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description() -> LaunchDescription:
+
+    tag_namespace_val = LaunchConfiguration('tag_namespace')
+    tag_namespace_arg = DeclareLaunchArgument(
+            'tag_namespace',
+            default_value=TextSubstitution(text='passive'),
+            description='Name of the tag namespace'
+        )
+    
+    config_file_val = LaunchConfiguration('config_file')
+    default_config_file_path = PathJoinSubstitution([FindPackageShare('dwm1001_launch'),
+                                                     'config',
+                                                     'default_passive.yaml'])
+    config_file_launch_arg = DeclareLaunchArgument(
+        'config_file',
+        default_value=default_config_file_path,
+        description='Configuration file for the active node'
+    )
+
     dwm1001_driver = Node(
         package="dwm1001_driver",
         executable="passive_tag",
-        name="dw1729_tag",
-        parameters=[{"serial_port": "/dev/ttyACM0"}],
+        namespace=tag_namespace_val,
+        parameters=[PathJoinSubstitution([FindPackageShare('dwm1001_launch'), 'config', config_file_val])],
     )
 
     return LaunchDescription(
-        [dwm1001_driver]
+        [tag_namespace_arg, config_file_launch_arg, dwm1001_driver]
     )

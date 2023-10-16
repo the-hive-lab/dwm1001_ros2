@@ -22,6 +22,9 @@ include(GNUInstallDirs)
 install(DIRECTORY launch
   DESTINATION ${CMAKE_INSTALL_DATADIR}/dwm1001_launch
 )
+install(DIRECTORY config
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/dwm1001_launch
+)
 
 #install(DIRECTORY params
 #  DESTINATION ${CMAKE_INSTALL_DATADIR}/dwm1001_launch

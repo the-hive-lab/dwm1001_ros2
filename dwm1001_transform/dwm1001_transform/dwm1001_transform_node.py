@@ -78,7 +78,7 @@ class Dwm1001TransformNode(Node):
         super().__init__("dwm1001_transform")
 
         self.tag_position_sub = self.create_subscription(
-            PointStamped, "tag_position", self._tag_position_callback, 1
+            PointStamped, "input/tag_position", self._tag_position_callback, 1
         )
         self.odom_pub = self.create_publisher(Odometry, "odometry/ips", 1)
 
