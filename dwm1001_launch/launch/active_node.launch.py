@@ -61,15 +61,22 @@ def generate_launch_description() -> LaunchDescription:
         parameters=[PathJoinSubstitution([FindPackageShare('dwm1001_launch'), 'config', config_file_val])]
     )
 
-    # map_to_dwm1001_transform = Node(
-    #     package="tf2_ros",
-    #     executable="static_transform_publisher",
-    #     name="map_to_dwm1001_broadcaster",
-    #     # x, y, z, roll, pitch, yaw, frame_id, child_frame_id
-    #     # arguments=["2.1336", "0", "0", "0", "0", "0", "map", "dwm1001"],
-    #     arguments=["0", "0.95", "1.8", "0", "0", "0", "map", "dwm1001"],
+    map_to_dwm1001_transform = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="map_to_dwm1001_broadcaster",
+        # x, y, z, roll, pitch, yaw, frame_id, child_frame_id
+        arguments=["2.49", "0.0", "1.9", "0", "0", "0", "map", "dwm1001"],
+    )
+
+    # dwm_transform = Node(
+    #     package="dwm1001_transform",
+    #     executable="dwm1001_transform",
+    #     name="dwm1001_transform",
+    #     remappings=[("tag_position", "DW0414")],
     # )
 
+    # TODO: Revisit the anchor_visualizer launch
     # anchor_visualizer = Node(
     #     package="dwm1001_visualization",
     #     executable="anchor_visualizer",
@@ -84,13 +91,6 @@ def generate_launch_description() -> LaunchDescription:
     #     ],
     # )
 
-    # dwm_transform = Node(
-    #     package="dwm1001_transform",
-    #     executable="dwm1001_transform",
-    #     name="dwm1001_transform",
-    #     remappings=[("tag_position", "DW0414")],
-    # )
-
     return LaunchDescription(
-        [tag_namespace_arg, config_file_launch_arg, dwm1001_driver] #map_to_dwm1001_transform, anchor_visualizer, dwm_transform]
+        [tag_namespace_arg, config_file_launch_arg, dwm1001_driver, map_to_dwm1001_transform] #dwm_transform]
     )
