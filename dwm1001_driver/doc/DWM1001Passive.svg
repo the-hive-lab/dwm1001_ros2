@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="157.2917px" preserveAspectRatio="none" style="width:414px;height:157px;background:#FFFFFF;" version="1.1" viewBox="0 0 414 157" width="414.5833px" zoomAndPan="magnify"><defs/><g><!--MD5=[257bc133b7abc24a6d74744f5691e1f1]
+entity output_passive--><g id="elem_output_passive"><path d="M202.0833,16.6667 L402.0833,16.6667 C407.2917,16.6667 407.2917,29.524 407.2917,29.524 C407.2917,29.524 407.2917,42.3812 402.0833,42.3812 L202.0833,42.3812 C196.875,42.3812 196.875,29.524 196.875,29.524 C196.875,29.524 196.875,16.6667 202.0833,16.6667 " fill="#FF6347" style="stroke:#454645;stroke-width:1.5625;"/><path d="M402.0833,16.6667 C396.875,16.6667 396.875,29.524 396.875,29.524 C396.875,42.3812 402.0833,42.3812 402.0833,42.3812 " fill="none" style="stroke:#454645;stroke-width:1.5625;"/><text fill="#FFFFFF" font-family="Inconsolata" font-size="14.5833" lengthAdjust="spacing" textLength="189.5833" x="202.0833" y="34.4021">output/&lt;discovered_tag_id&gt;</text></g><!--MD5=[50e6fde13139d208d6f1123f70a51593]
+entity sp_passive--><g id="elem_sp_passive"><rect fill="#F1F1F1" height="36.1312" rx="3.6458" ry="3.6458" style="stroke:#181818;stroke-width:0.5208333333333334;" width="101.0417" x="38.0208" y="115.2917"/><text fill="#000000" font-family="Inconsolata" font-size="14.5833" lengthAdjust="spacing" textLength="80.2083" x="48.4375" y="138.2354">serial_port</text></g><!--MD5=[d3f6b5b0ccb1b812f517b1596bdc1b9f]
+entity PassiveTagNode--><g id="elem_PassiveTagNode"><polygon fill="#F1F1F1" points="16.6667,16.6667,27.0833,6.25,160.4167,6.25,160.4167,42.3812,150,52.7979,16.6667,52.7979,16.6667,16.6667" style="stroke:#181818;stroke-width:0.5208333333333334;"/><line style="stroke:#181818;stroke-width:0.5208333333333334;" x1="150" x2="160.4167" y1="16.6667" y2="6.25"/><line style="stroke:#181818;stroke-width:0.5208333333333334;" x1="16.6667" x2="150" y1="16.6667" y2="16.6667"/><line style="stroke:#181818;stroke-width:0.5208333333333334;" x1="150" x2="150" y1="16.6667" y2="52.7979"/><text fill="#000000" font-family="Inconsolata" font-size="14.5833" lengthAdjust="spacing" textLength="102.0833" x="32.2917" y="39.6104">PassiveTagNode</text></g><!--MD5=[3e20b2ec08a3e973abfa8eaced789647]
+link PassiveTagNode to sp_passive--><g id="link_PassiveTagNode_sp_passive"><path d="M88.5417,53.1458 C88.5417,71.7708 88.5417,97.8021 88.5417,114.8542 " fill="none" id="PassiveTagNode-sp_passive" style="stroke:#454645;stroke-width:1.0416666666666667;"/></g><!--MD5=[9c4cc848c33e31ece8ed0b54440ceefb]
+link PassiveTagNode to output_passive--><g id="link_PassiveTagNode_output_passive"><path d="M160.6979,29.5208 C170.4167,29.5208 180.1458,29.5208 189.8646,29.5208 " fill="none" id="PassiveTagNode-to-output_passive" style="stroke:#454645;stroke-width:1.0416666666666667;"/><polygon fill="#454645" points="195.0208,29.5208,185.6458,25.3542,189.8125,29.5208,185.6458,33.6875,195.0208,29.5208" style="stroke:#454645;stroke-width:1.0416666666666667;"/><text fill="#000000" font-family="Inconsolata" font-size="13.5417" lengthAdjust="spacing" textLength="29.1667" x="168.7005" y="26.4267">0..n</text></g><!--MD5=[de3dcee4aab5a23e5e8f48cfe55b5ad3]
+@startuml DWM1001Passive
+!theme vibrant
+skinparam dpi 100
+skinparam DefaultFontName Inconsolata
+
+queue "output/<discovered_tag_id>" as output_passive
+rectangle "serial_port" as sp_passive
+node PassiveTagNode 
+PassiveTagNode -down- sp_passive
+PassiveTagNode -right-> "0..n" output_passive
+ 
+@enduml
+
+@startuml DWM1001Passive
+skinparam BackgroundColor FFFFFF
+skinparam shadowing false
+skinparam RoundCorner 7
+skinparam ArrowColor 454645
+skinparam FontColor 454645
+skinparam SequenceLifeLineBorderColor 696969
+skinparam SequenceGroupHeaderFontColor 454645
+skinparam SequenceGroupFontColor 696969
+skinparam SequenceGroupBorderColor 696969
+skinparam SequenceGroupBorderThickness 1
+
+skinparam sequenceDivider {
+    BorderColor 454645
+    BorderThickness 1
+    FontColor 454645
+}
+
+skinparam participant {
+    BackgroundColor FF6347
+    BorderColor 454645
+    FontColor FFFFFF
+    BorderThickness 1.5
+}
+
+skinparam database {
+    BackgroundColor 00FFFF
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam entity {
+    BackgroundColor FFE552
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam note {
+    BackgroundColor 7FFFD4
+    BorderColor 454645
+    FontColor 454645
+    BorderThickness 1.5
+}
+
+skinparam actor {
+    BackgroundColor 454645
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam boundary {
+    BackgroundColor FFE552
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam control {
+    BackgroundColor FFE552
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam collections {
+    BackgroundColor FF5F42
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam queue {
+    BackgroundColor FF6347
+    BorderColor 454645
+    FontColor FFF
+    BorderThickness 1.5
+}
+skinparam dpi 100
+skinparam DefaultFontName Inconsolata
+
+queue "output/<discovered_tag_id>" as output_passive
+rectangle "serial_port" as sp_passive
+node PassiveTagNode 
+PassiveTagNode -down- sp_passive
+PassiveTagNode -right-> "0..n" output_passive
+ 
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 13:01:30 EDT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

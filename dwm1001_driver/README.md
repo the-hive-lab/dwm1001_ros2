@@ -9,6 +9,8 @@ This is a ROS 2 package for interfacing with the Qorvo (formerly Decawave) DWM10
 This node connects to a DWM1001 configured as a passive tag. It listens for position reports from active tags and
 publishes any that it discovers.
 
+![Diagram for passive node](doc/DWM1001Passive.svg)
+
 ### Subscribers
 
 This node does not provide subscribers.
@@ -67,6 +69,8 @@ This node does not provide actions.
 ## Active Tag Node (`active_tag`)
 
 This node connects to a DWM1001 configured as an active tag and publishes its position.
+
+![Diagram for active node](doc/DWM1001Active.svg)
 
 ### Subscribers
 

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="157.2917px" preserveAspectRatio="none" style="width:327px;height:157px;background:#FFFFFF;" version="1.1" viewBox="0 0 327 157" width="327.0833px" zoomAndPan="magnify"><defs/><g><!--MD5=[49ba8e8639e74bab654e764fd873a75f]
+entity output_active--><g id="elem_output_active"><path d="M194.7917,16.6667 L314.5833,16.6667 C319.7917,16.6667 319.7917,29.524 319.7917,29.524 C319.7917,29.524 319.7917,42.3812 314.5833,42.3812 L194.7917,42.3812 C189.5833,42.3812 189.5833,29.524 189.5833,29.524 C189.5833,29.524 189.5833,16.6667 194.7917,16.6667 " fill="#FF6347" style="stroke:#454645;stroke-width:1.5625;"/><path d="M314.5833,16.6667 C309.375,16.6667 309.375,29.524 309.375,29.524 C309.375,42.3812 314.5833,42.3812 314.5833,42.3812 " fill="none" style="stroke:#454645;stroke-width:1.5625;"/><text fill="#FFFFFF" font-family="Inconsolata" font-size="14.5833" lengthAdjust="spacing" textLength="109.375" x="194.7917" y="34.4021">output/&lt;tag_id&gt;</text></g><!--MD5=[f36ee95eaafe973bc6153e90aeb58576]
+entity sp_active--><g id="elem_sp_active"><rect fill="#F1F1F1" height="36.1312" rx="3.6458" ry="3.6458" style="stroke:#181818;stroke-width:0.5208333333333334;" width="101.0417" x="34.375" y="115.2917"/><text fill="#000000" font-family="Inconsolata" font-size="14.5833" lengthAdjust="spacing" textLength="80.2083" x="44.7917" y="138.2354">serial_port</text></g><!--MD5=[78737e891fb8d41ae0141552ba367385]
+entity ActiveTagNode--><g id="elem_ActiveTagNode"><polygon fill="#F1F1F1" points="16.6667,16.6667,27.0833,6.25,153.125,6.25,153.125,42.3812,142.7083,52.7979,16.6667,52.7979,16.6667,16.6667" style="stroke:#181818;stroke-width:0.5208333333333334;"/><line style="stroke:#181818;stroke-width:0.5208333333333334;" x1="142.7083" x2="153.125" y1="16.6667" y2="6.25"/><line style="stroke:#181818;stroke-width:0.5208333333333334;" x1="16.6667" x2="142.7083" y1="16.6667" y2="16.6667"/><line style="stroke:#181818;stroke-width:0.5208333333333334;" x1="142.7083" x2="142.7083" y1="16.6667" y2="52.7979"/><text fill="#000000" font-family="Inconsolata" font-size="14.5833" lengthAdjust="spacing" textLength="94.7917" x="32.2917" y="39.6104">ActiveTagNode</text></g><!--MD5=[ae95eb2e14c970890cf7513cecfad644]
+link ActiveTagNode to output_active--><g id="link_ActiveTagNode_output_active"><path d="M153.5417,29.5208 C163.1771,29.5208 172.8021,29.5208 182.4375,29.5208 " fill="none" id="ActiveTagNode-to-output_active" style="stroke:#454645;stroke-width:1.0416666666666667;"/><polygon fill="#454645" points="187.5208,29.5208,178.1458,25.3542,182.3125,29.5208,178.1458,33.6875,187.5208,29.5208" style="stroke:#454645;stroke-width:1.0416666666666667;"/><text fill="#000000" font-family="Inconsolata" font-size="13.5417" lengthAdjust="spacing" textLength="7.2917" x="173.8079" y="26.8666">1</text></g><!--MD5=[e201660748e129720f11928b21718e61]
+link ActiveTagNode to sp_active--><g id="link_ActiveTagNode_sp_active"><path d="M84.8958,53.1458 C84.8958,71.7708 84.8958,97.8021 84.8958,114.8542 " fill="none" id="ActiveTagNode-sp_active" style="stroke:#454645;stroke-width:1.0416666666666667;"/></g><!--MD5=[3abbbe4905700d12cbe5790833ed14d5]
+@startuml DWM1001Active
+!theme vibrant
+skinparam dpi 100
+skinparam DefaultFontName Inconsolata
+
+queue "output/<tag_id>" as output_active
+rectangle "serial_port" as sp_active
+node ActiveTagNode
+ActiveTagNode -right-> "1" output_active
+ActiveTagNode -down- sp_active
+
+@enduml
+
+@startuml DWM1001Active
+skinparam BackgroundColor FFFFFF
+skinparam shadowing false
+skinparam RoundCorner 7
+skinparam ArrowColor 454645
+skinparam FontColor 454645
+skinparam SequenceLifeLineBorderColor 696969
+skinparam SequenceGroupHeaderFontColor 454645
+skinparam SequenceGroupFontColor 696969
+skinparam SequenceGroupBorderColor 696969
+skinparam SequenceGroupBorderThickness 1
+
+skinparam sequenceDivider {
+    BorderColor 454645
+    BorderThickness 1
+    FontColor 454645
+}
+
+skinparam participant {
+    BackgroundColor FF6347
+    BorderColor 454645
+    FontColor FFFFFF
+    BorderThickness 1.5
+}
+
+skinparam database {
+    BackgroundColor 00FFFF
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam entity {
+    BackgroundColor FFE552
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam note {
+    BackgroundColor 7FFFD4
+    BorderColor 454645
+    FontColor 454645
+    BorderThickness 1.5
+}
+
+skinparam actor {
+    BackgroundColor 454645
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam boundary {
+    BackgroundColor FFE552
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam control {
+    BackgroundColor FFE552
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam collections {
+    BackgroundColor FF5F42
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam queue {
+    BackgroundColor FF6347
+    BorderColor 454645
+    FontColor FFF
+    BorderThickness 1.5
+}
+skinparam dpi 100
+skinparam DefaultFontName Inconsolata
+
+queue "output/<tag_id>" as output_active
+rectangle "serial_port" as sp_active
+node ActiveTagNode
+ActiveTagNode -right-> "1" output_active
+ActiveTagNode -down- sp_active
+
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 13:01:30 EDT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

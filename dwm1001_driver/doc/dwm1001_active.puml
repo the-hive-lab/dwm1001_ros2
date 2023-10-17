@@ -1,0 +1,12 @@
+@startuml DWM1001Active
+!theme vibrant
+skinparam dpi 100
+skinparam DefaultFontName Inconsolata
+
+queue "output/<tag_id>" as output_active
+rectangle "serial_port" as sp_active
+node ActiveTagNode
+ActiveTagNode -right-> "1" output_active
+ActiveTagNode -down- sp_active
+
+@enduml
