@@ -12,7 +12,7 @@ This node transforms incoming DWM1001 tag locations (`PointStamped` messages) fr
 
 | Topic | Message Type | Description |
 |-------|--------------|-------------|
-| `~/tag_position` | `geometry_msgs/PointStamped` | DWM1001 tag's position in the `dwm1001` frame. |
+| `~/input/tag_position` | `geometry_msgs/PointStamped` | DWM1001 tag's position in the `dwm1001` frame. |
 | `~/tf` | `tf2_msgs/TFMessage` | Transform from the `dwm1001` frame to the `map` frame. |
 | `~/tf_static` | `tf2_msgs/TFMessage` | Transform from the `dwm1001` frame to the `map` frame. |
 
@@ -22,7 +22,7 @@ This node transforms incoming DWM1001 tag locations (`PointStamped` messages) fr
 
 | Topic | Message Type | Frequency | Description |
 |-------|--------------|-----------|-------------|
-| `~/odometry/ips` | `nav_msgs/Odometry` | Event-driven | DWM1001 tag's position transformed to the `map` frame. The following message fields are unused: `child_frame_id`, `pose.pose.orientation`, and `twist`. |
+| `~/output/odometry/ips` | `nav_msgs/Odometry` | Event-driven | DWM1001 tag's position transformed to the `map` frame. The following message fields are unused: `child_frame_id`, `pose.pose.orientation`, and `twist`. |
 
 ### Parameters
 
