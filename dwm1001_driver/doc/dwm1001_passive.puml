@@ -1,0 +1,12 @@
+@startuml DWM1001Passive
+!theme vibrant
+skinparam dpi 100
+skinparam DefaultFontName Arial
+
+queue "output/<discovered_tag_id>" as output_passive
+rectangle "serial_port" as sp_passive
+node PassiveTagNode 
+PassiveTagNode -down- sp_passive
+PassiveTagNode -right-> "0..n" output_passive
+ 
+@enduml
