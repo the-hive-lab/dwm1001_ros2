@@ -8,6 +8,8 @@ This is a ROS 2 package for transforming points from the `dwm1001` frame to the 
 
 This node transforms incoming DWM1001 tag locations (`PointStamped` messages) from the common `dwm1001` frame to the `map` frame.
 
+![DWM1001 transform node diagram](doc/DWM1001Transform.svg)
+
 ### Subscribers
 
 | Topic | Message Type | Description |

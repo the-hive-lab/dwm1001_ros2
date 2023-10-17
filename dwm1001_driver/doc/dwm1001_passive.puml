@@ -1,7 +1,7 @@
 @startuml DWM1001Passive
 !theme vibrant
 skinparam dpi 100
-skinparam DefaultFontName Inconsolata
+skinparam DefaultFontName Arial
 
 queue "output/<discovered_tag_id>" as output_passive
 rectangle "serial_port" as sp_passive

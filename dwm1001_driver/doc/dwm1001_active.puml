@@ -1,7 +1,7 @@
 @startuml DWM1001Active
 !theme vibrant
 skinparam dpi 100
-skinparam DefaultFontName Inconsolata
+skinparam DefaultFontName Arial
 
 queue "output/<tag_id>" as output_active
 rectangle "serial_port" as sp_active
