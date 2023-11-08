@@ -20,6 +20,7 @@ from geometry_msgs.msg import PointStamped, TransformStamped
 
 import dwm1001
 import serial
+from collections import deque
 
 
 class PassiveTagNode(Node):
@@ -44,6 +45,18 @@ class PassiveTagNode(Node):
                 f"Ignoring tags: "
                 + ", ".join(f"'{tag}'" for tag in self.tags_to_ignore)
             )
+
+        if self.get_parameter("num_samples").value > 10:
+            self.get_logger().warning("Maximum number of samples is 10. Setting to maximum.")
+            self.num_samples = 10
+        elif self.get_parameter("num_samples").value < 1:
+            self.get_logger().warning("Minimum number of samples is 1. Setting to minimum.")
+            self.num_samples = 1
+        else:
+            self.num_samples = self.get_parameter("num_samples").value
+        # The position buffer is maintained for each tag and stores a deque with a fixed size
+        self.get_logger().info(f"Listener set to average {self.num_samples} samples")
+        self.position_buffer = dict()
 
         self.publishers_dict = dict()
         self.timer = self.create_timer(1 / 10, self.timer_callback)
@@ -82,6 +95,14 @@ class PassiveTagNode(Node):
         )
         self.declare_parameter("ignore_tags", "", ignore_tags_descriptor)
 
+        num_samples_decriptor = ParameterDescriptor(
+            description="The number of samples used to compute moving average.",
+            type=ParameterType.PARAMETER_INTEGER,
+            read_only=True,
+        )
+        # Defaults to 3 to provide a small amount of smoothing
+        self.declare_parameter("num_samples", 3, num_samples_decriptor)
+
     def timer_callback(self):
         try:
             tag_label, tag_position = self.dwm_handle.wait_for_position_report()
@@ -92,16 +113,15 @@ class PassiveTagNode(Node):
         if tag_label in self.tags_to_ignore:
             return
 
-        time_stamp = self.get_clock().now().to_msg()
-
-        msg = PointStamped()
-
-        msg.header.stamp = time_stamp
-        msg.header.frame_id = "dwm1001"
-
-        msg.point.x = tag_position.x_m
-        msg.point.y = tag_position.y_m
-        msg.point.z = tag_position.z_m
+        # Setup the buffer for a tag when it is encountered
+        if tag_label not in self.position_buffer:
+            self.position_buffer[tag_label] = deque(maxlen=self.num_samples)
+        # Store the report as a tuple to use in an average later
+        self.position_buffer[tag_label].append((
+            tag_position.x_m,
+            tag_position.y_m,
+            tag_position.z_m
+        ))
 
         if tag_label not in self.publishers_dict:
             self.get_logger().info(
@@ -113,7 +133,31 @@ class PassiveTagNode(Node):
                 PointStamped, tag_topic, 1
             )
 
-        self.publishers_dict[tag_label].publish(msg)
+        # TODO: Check for the right amount of samples before averaging and making msg
+        if len(self.position_buffer[tag_label]) == self.num_samples:
+            # self.get_logger().info(f"Compute average for {tag_label}")
+            
+            time_stamp = self.get_clock().now().to_msg()
+
+            tag_positions = self.position_buffer[tag_label]
+            x_avg = sum([p[0] for p in tag_positions]) / self.num_samples
+            y_avg = sum([p[1] for p in tag_positions]) / self.num_samples
+            z_avg = sum([p[2] for p in tag_positions]) / self.num_samples
+
+            msg = PointStamped()
+
+            msg.header.stamp = time_stamp
+            msg.header.frame_id = "dwm1001"
+
+            msg.point.x = round(x_avg, 3)
+            msg.point.y = round(y_avg, 3)
+            msg.point.z = round(z_avg, 3)
+
+            self.get_logger().debug(f"Average point for {tag_label}: {msg.point}")
+
+            self.publishers_dict[tag_label].publish(msg)
+        else:
+            self.get_logger().warning("Still buffering position samples...")
 
         # DWM1001 tags publish at 10 Hz, so we want 2 times that
         # (Nyquist theorem) per known tag.
