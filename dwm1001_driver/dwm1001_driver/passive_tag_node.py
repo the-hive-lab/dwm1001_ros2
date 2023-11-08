@@ -47,11 +47,15 @@ class PassiveTagNode(Node):
             )
 
         if self.get_parameter("num_samples").value > 10:
-            self.get_logger("Maximum number of samples is 10. Setting to maximum.")
+            self.get_logger().warning("Maximum number of samples is 10. Setting to maximum.")
             self.num_samples = 10
+        elif self.get_parameter("num_samples").value < 1:
+            self.get_logger().warning("Minimum number of samples is 1. Setting to minimum.")
+            self.num_samples = 1
         else:
             self.num_samples = self.get_parameter("num_samples").value
         # The position buffer is maintained for each tag and stores a deque with a fixed size
+        self.get_logger().info(f"Listener set to average {self.num_samples} samples")
         self.position_buffer = dict()
 
         self.publishers_dict = dict()
@@ -109,17 +113,6 @@ class PassiveTagNode(Node):
         if tag_label in self.tags_to_ignore:
             return
 
-        time_stamp = self.get_clock().now().to_msg()
-
-        msg = PointStamped()
-
-        msg.header.stamp = time_stamp
-        msg.header.frame_id = "dwm1001"
-
-        msg.point.x = tag_position.x_m
-        msg.point.y = tag_position.y_m
-        msg.point.z = tag_position.z_m
-
         # Setup the buffer for a tag when it is encountered
         if tag_label not in self.position_buffer:
             self.position_buffer[tag_label] = deque(maxlen=self.num_samples)
@@ -141,7 +134,30 @@ class PassiveTagNode(Node):
             )
 
         # TODO: Check for the right amount of samples before averaging and making msg
-        self.publishers_dict[tag_label].publish(msg)
+        if len(self.position_buffer[tag_label]) == self.num_samples:
+            # self.get_logger().info(f"Compute average for {tag_label}")
+            
+            time_stamp = self.get_clock().now().to_msg()
+
+            tag_positions = self.position_buffer[tag_label]
+            x_avg = sum([p[0] for p in tag_positions]) / self.num_samples
+            y_avg = sum([p[1] for p in tag_positions]) / self.num_samples
+            z_avg = sum([p[2] for p in tag_positions]) / self.num_samples
+
+            msg = PointStamped()
+
+            msg.header.stamp = time_stamp
+            msg.header.frame_id = "dwm1001"
+
+            msg.point.x = tag_position.x_m
+            msg.point.y = tag_position.y_m
+            msg.point.z = tag_position.z_m
+
+            self.get_logger().debug(f"Average point for {tag_label}: {msg.point}")
+
+            self.publishers_dict[tag_label].publish(msg)
+        else:
+            self.get_logger().warning("Still buffering position samples...")
 
         # DWM1001 tags publish at 10 Hz, so we want 2 times that
         # (Nyquist theorem) per known tag.
