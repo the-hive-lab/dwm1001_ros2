@@ -149,9 +149,9 @@ class PassiveTagNode(Node):
             msg.header.stamp = time_stamp
             msg.header.frame_id = "dwm1001"
 
-            msg.point.x = tag_position.x_m
-            msg.point.y = tag_position.y_m
-            msg.point.z = tag_position.z_m
+            msg.point.x = round(x_avg, 3)
+            msg.point.y = round(y_avg, 3)
+            msg.point.z = round(z_avg, 3)
 
             self.get_logger().debug(f"Average point for {tag_label}: {msg.point}")
 
