@@ -5,7 +5,20 @@ The HIVE Lab uses these sensors as a reasonable, low cost alternative to a full 
 
 ## Dependencies
 
-This package requires the installation of our [`pydwm1001`](https://github.com/the-hive-lab/pydwm1001) library.
+This package requires the installation of our [`pydwm1001`](https://github.com/the-hive-lab/pydwm1001) library, which is not an apt package.
+Instead, you can create a virtual environment within your ROS2 workspace and install `pydwm1001` for use by the ROS2 driver:
+
+```
+~/ros_ws$ mkdir venv
+~/ros_ws$ python3 -m venv --system-site-packages venv/
+~/ros_ws$ source venv/bin/activate
+(venv) ~/ros_ws$ pip install pydwm1001
+```
+
+> The second command assumes you already source the ROS2 environment, e.g. `source /opt/ros/jazzy/setup.bash`, to put ROS2 python libraries on your path.
+
+
+
 
 ## Packages
 
